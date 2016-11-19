@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1150</x>
+      <y>270</y>
+      <w>310</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>Photo
+--
+-date: String
+-time: String
+-owner: String
+-caption: String
+-tags: ArrayList&lt;Tag&gt;
+-albums: ArrayList&lt;Album&gt;
+--
++setCaption(String c): void
++setTags(Tag tag): void
++addAlbum(Album album): void
++moveAlbum(Album curr, Album new): void
++getCaption(): String
++getTags(): String
++getAlbums(): String
++getDateAndTime(): String
++setCaption(): String
++addTag(String): void
++deleteTag(Tag): void
++getInfo(): void
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1250</x>
+      <y>70</y>
+      <w>200</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Tag
+--
++tag: String
+
+--
++setTag(): void
++getTag(): String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>550</y>
+      <w>280</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>User
+--
+-ID: String
+-Password: String
+
+--
++setID(String id): void
++setPassword(String pw): void
++getID(): String
++getPassword(): String
+
++getAlbums(): ArrayList&lt;Album&gt;
++addAlbum:(Album album): void
++editAlbum(Album album): void
++deleteAlbum(Album album): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>840</x>
+      <y>560</y>
+      <w>270</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>Album
+--
+-albumName: String
+-albumOwner: String
+-photos: ArrayList&lt;Photo&gt;
+--
++setAlbumName(String name): void
++setAlbumOwner(String ID): void
++getName(): void
++getOwner(): void
+
++getPhotos(): ArrayList&lt;Photo&gt;
++addPhoto(Photo photo): void
++deletePhoto(Photo photo): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>20</y>
+      <w>440</w>
+      <h>490</h>
+    </coordinates>
+    <panel_attributes>Controller (need to delegate to separate ctrlrs)
+--
++login(String ID, String password): void
++logout(): void
+
++listUsers(): ArrayList&lt;User&gt;
++addUser(String ID, String Password): void
++deleteUser(String ID): void
++editUser(String ID, String oldPW, String newPW): void
+
++listAlbum(): ArrayList&lt;Album&gt;
++createAlbum(String name): void
++deleteAlbum(Album album): void
++renameAlbum(Album album, String newName): void
++openAlbum(Album album): void
+
++searchDate(String start, String end): ArrayList&lt;Photo&gt;
++searchTag(ArrayList&lt;String&gt; tags): ArrayList&lt;Photo&gt;
+
++listPhotos(Album album): ArrayList&lt;Photo&gt;
++addPhoto(String photofile): void
++deletePhoto(Photo photo): void
++addCaption(Photo photo, String caption): void
++editCaption(Photo photo, String newCaption): void
++displayPhotoDetails(Photo photo): void
++movePhoto(Photo photo, Album old, Album new): void
++copyPhoto(Photo photo, Album old, Album new): void
+
++slideshow(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1330</x>
+      <y>180</y>
+      <w>80</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes>
+    <additional_attributes>60.0;100.0;60.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1090</x>
+      <y>600</y>
+      <w>150</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;90.0;110.0;90.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>730</x>
+      <y>670</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+</diagram>
