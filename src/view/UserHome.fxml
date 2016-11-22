@@ -2,15 +2,25 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserController">
    <children>
+      <Button mnemonicParsing="false" onAction="#openAlbum" prefHeight="25.0" prefWidth="106.0" text="Open Album" />
+      <Button mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="106.0" text="Rename Album" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="86.0" AnchorPane.rightAnchor="490.0" />
+      <Button mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="106.0" text="Delete Album" AnchorPane.bottomAnchor="50.0" />
+      <Label fx:id="albumName" text="Album Name">
+         <font>
+            <Font name="Bernard MT Condensed" size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="oldestPhoto" text="Label" />
+      <Label fx:id="photoCount" text="Label" />
+      <Label fx:id="dateRange" text="Label" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a6acb2" height="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="50.0" text="Logout" AnchorPane.rightAnchor="0.0">
          <font>
@@ -18,32 +28,15 @@
          </font>
       </Button>
       <Button layoutX="46.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" onAction="#searchPhotos" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.rightAnchor="690.0" />
-      <SplitPane dividerPositions="0.23942093541202672" layoutX="200.0" layoutY="98.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="80.0">
-               <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="394.0" mnemonicParsing="false" onAction="#createAlbum" prefHeight="26.0" prefWidth="140.0" text="Create Album" />
-                  <ListView fx:id="albumList" prefHeight="360.0" prefWidth="213.0" AnchorPane.bottomAnchor="112.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="426.0">
-               <children>
-                  <ImageView fitHeight="203.0" fitWidth="297.0" layoutX="192.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="192.0" AnchorPane.rightAnchor="191.0" />
-                  <Button layoutX="265.0" layoutY="396.0" mnemonicParsing="false" onAction="#openAlbum" prefHeight="25.0" prefWidth="106.0" text="Open Album" />
-                  <Button layoutX="86.0" layoutY="396.0" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="106.0" text="Rename Album" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="86.0" AnchorPane.rightAnchor="490.0" />
-                  <Button layoutX="436.0" layoutY="396.0" mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="106.0" text="Delete Album" AnchorPane.bottomAnchor="50.0" />
-                  <ImageView fitHeight="203.0" fitWidth="297.0" layoutX="169.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="albumName" layoutX="253.0" layoutY="259.0" text="Album Name">
-                     <font>
-                        <Font name="Bernard MT Condensed" size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="oldestPhoto" layoutX="303.0" layoutY="326.0" text="Label" />
-                  <Label fx:id="photoCount" layoutX="304.0" layoutY="300.0" text="Label" />
-                  <Label fx:id="dateRange" layoutX="303.0" layoutY="356.0" text="Label" />
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+      <TableView prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Album" />
+          <TableColumn prefWidth="75.0" text="# Photos" />
+            <TableColumn prefWidth="99.0" text="Oldest" />
+            <TableColumn prefWidth="99.0" text="Newest" />
+        </columns>
+      </TableView>
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createAlbum" prefHeight="26.0" prefWidth="140.0" text="Create Album" />
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="426.0" />
    </children>
 </AnchorPane>
