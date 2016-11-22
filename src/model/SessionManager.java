@@ -1,15 +1,24 @@
 package model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-public class Backend_Controller {
+public class SessionManager implements Serializable{
 	private List<User> users;
 	private int current_user_index;
+	//FOR SERIALIZER
+	public static final String storeDir = "dat";
+	public static final String storeFile = "sessions.dat";
+	private static final long serialVersionUID = 1L;
 	
-	public Backend_Controller(){
+	public SessionManager(){
 		/* Only needs to be called once ever
 		 * Serialize and reload this object
 		 */
@@ -31,9 +40,7 @@ public class Backend_Controller {
 			}
 			return return_list;
 		}
-		else{
-			return null;
-		}
+		return null;
 	}
 	
 	/*	Login as specified user.
@@ -44,7 +51,7 @@ public class Backend_Controller {
 		if(current_user_index == -1){
 			return false; //User isn't in list, shows that login failed
 		}
-		//TODO: Load users objects with serialization
+		//Load user's objects with serialization... should be implicit?
 		return true;
 	}
 	
@@ -62,10 +69,7 @@ public class Backend_Controller {
 	 */
 	public void logout(){
 		if(current_user_index != -1){
-			/* TODO:
-			 * Serialize
-			 * EVERYTHING
-			 */
+			SessionManager.writeApp(this);
 			current_user_index = -1;
 		}
 	}
@@ -85,9 +89,7 @@ public class Backend_Controller {
 			}
 			return return_list;	
 		}
-		else{
-			return null;
-		}	
+		return null;	
 	}
 	
 	/* Returns a list of tags that have
@@ -112,9 +114,7 @@ public class Backend_Controller {
 			}
 			return return_list;	
 		}
-		else{
-			return null;
-		}
+		return null;
 	}
 	
 	/* Returns a list of tags that have
@@ -131,9 +131,7 @@ public class Backend_Controller {
 			}
 			return return_list;
 		}
-		else{
-			return null;
-		}
+		return null;
 	}
 	
 	/* Returns a list of tags that have
@@ -150,9 +148,7 @@ public class Backend_Controller {
 			}
 			return return_list;
 		}
-		else{
-			return null;
-		}
+		return null;
 	}
 	
 	/* Returns a list of albums that
@@ -169,9 +165,7 @@ public class Backend_Controller {
 			}
 			return return_list;
 		}
-		else{
-			return null;
-		}
+		return null;
 	}
 	
 	/* Returns list of albums
@@ -186,99 +180,134 @@ public class Backend_Controller {
 		}
 	}
 	
-	/* TODO
-	 * Create an empty album with title
-	 */
+	/* Create an empty album with title */
 	public void createAlbum(String title){
 		if(current_user_index != -1){
-			
+			users.get(this.current_user_index).addAlbum(new Album(title));
 		}
 	}
 	
-	/* TODO
-	 * Overloaded.
+	/* Overloaded.
 	 * Create an album with a list of photos already in it.
 	 * Used for creating an album from a search.
 	 */
 	public void createAlbum(String title, List<Photo> p){
 		if(current_user_index != -1){
-			
+			users.get(this.current_user_index).addAlbum(new Album(title, p));
 		}
 	}
 	
-	/*	TODO
-	 * 	Removes album from the users list of albums
+	/*	Removes album from the users list of albums
 	 * 	doing this keeps all photos and tags in tact
 	 */
 	public void deleteAlbum(Album a){
 		if(current_user_index != -1){
-			
+			users.get(this.current_user_index).deleteAlbum(a);
 		}
 	}
 	
-	/* TODO
-	 * Copies photo 'p' to album 'to' then
+	/* Copies photo 'p' to album 'to' then
 	 * Removes photo 'p' from album 'from'
 	 */
 	public void movePhoto(Photo p, Album from, Album to){
 		if(current_user_index != -1){
-			
+			this.copyPhoto(p, to);
+			from.deletePhoto(p);
 		}
 	}
 	
-	/* TODO
-	 * Copies photo 'p' to album 'to' then
-	 */
-	public void copyPhoto(Photo p, Album from, Album to){
+	/* Copies photo 'p' to album 'to' then */
+	public void copyPhoto(Photo p, Album to){
 		if(current_user_index != -1){
-			
+			to.addPhoto(p);
 		}		
 	}
 	
-	/* TODO
-	 * Returns a list of photos
+	/* Adds photo to the session.
+	 * -adds to the user
+	 * -adds it to an album
+	 */
+	public void addPhoto(Photo p, Album a){
+		a.addPhoto(p);
+		users.get(this.current_user_index).addPhoto(p);
+	}
+	
+	/* Returns a list of photos
 	 * that have a date newer than from
 	 * and older than to
 	 * Used in performing searches
 	 */
-	public List<Photo> getPhotos_Taken_Btwn(Calendar from, Calendar to){
+	public List<Photo> getPhotos_Taken_Btwn(SimpleDate from, SimpleDate to){
 		if(current_user_index != -1){
-			
-		}
-		else{
-			return null;
+			List<Photo> return_list = new ArrayList<Photo>();
+			for(Photo p : users.get(this.current_user_index).getPhotos()){
+				if(p.getDate().isInRange(from, to)){
+					return_list.add(p);
+				}
+			}
+			return return_list;
 		}
 		return null;
 	}
 	
 	//**********THE FOLLOWING ARE ADMIN ONLY METHODS**********
 	
-	/* TODO
-	 * Returns a list of all users.
+	/* Returns a list of all users.
 	 * Used in the admin panel.
 	 */
 	public List<User> listUsers(){
 		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0){
-			
+			return users;
 		}
 		return null;
 	}
 	
-	/* TODO
-	 * Adds a new user to this object
+	/* Adds a new user to this object 
+	 * Return values:
+	 *  0 -> Success
+	 * -1 -> Bad input
+	 *  1 -> User name exists
+	 * -2 -> not logged in as admin
 	 */
-	public void createUser(String username){
-		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0){
-			
-		}	
+	public int createUser(String username){
+		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0 && !username.matches("[a-zA-Z]+")){
+			if(username.isEmpty() || username.length() > 15){
+				return -1;
+			}
+			for(User u : users){
+				if(u.toString().compareTo(username) == 0){
+					return 1;
+				}
+			}
+			users.add(new User(username));
+			return 0;
+		}
+		return -2;
 	}
 	
-	/* TODO
-	 * Deletes specified user from this object
+	/* Deletes specified user from this object
+	 * returns false if the user doesn't exist
+	 * or if the method is called when admin isn't logged in
 	 */
-	public void deleteUser(User u){
+	public boolean deleteUser(User u){
 		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0){
-			
+			return users.remove(u);
 		}
+		return false;
 	}
+	
+	//********************SERIALIZER********************
+	public static void writeApp(SessionManager man)	throws IOException {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));
+			oos.writeObject(man);
+			oos.close();
+	}
+	
+	public static SessionManager readApp() throws IOException, ClassNotFoundException{
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir+File.separator+storeFile));
+		SessionManager man = (SessionManager)ois.readObject();
+		ois.close();
+		return man;
+	}
+	
 }

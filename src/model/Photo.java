@@ -1,16 +1,26 @@
 package model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-public class Photo {
+public class Photo implements Serializable{
 	private String image_path;
 	private String caption;
-	private Calendar date;
+	private SimpleDate date;
 	private List<Tag> tags;
+	//FOR SERIALIZER
+	public static final String storeDir = "dat";
+	public static final String storeFile = "date.dat";
+	private static final long serialVersionUID = 1L;
 	
-	public Photo(String p, String cap, Calendar d){
+	public Photo(String p, String cap, SimpleDate d){
 		image_path = p;
 		caption = cap;
 		date = d;
@@ -29,7 +39,7 @@ public class Photo {
 		return caption;
 	}
 	
-	public Calendar getDate(){
+	public SimpleDate getDate(){
 		return date;
 	}
 	
@@ -44,4 +54,18 @@ public class Photo {
 	public void deleteTag(Tag t){
 		tags.remove(t);
 	}
+	
+	//********************SERIALIZER********************
+		public static void writeApp(Photo p)	throws IOException {
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));
+				oos.writeObject(p);
+				oos.close();
+		}
+		
+		public static Photo readApp() throws IOException, ClassNotFoundException{
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir+File.separator+storeFile));
+			Photo p = (Photo)ois.readObject();
+			ois.close();
+			return p;
+		}
 }
