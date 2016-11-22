@@ -9,36 +9,36 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.PhotoViewController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a6acb2" height="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-    <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" text="Logout" AnchorPane.rightAnchor="0.0">
+    <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="50.0" text="Logout" AnchorPane.rightAnchor="0.0">
          <font>
             <Font name="Laksaman" size="9.0" />
          </font>
       </Button>
-      <Button layoutX="46.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.rightAnchor="690.0" />
+      <Button layoutX="46.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" onAction="#searchPhotos" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.rightAnchor="690.0" />
       <SplitPane dividerPositions="0.23942093541202672" layoutX="200.0" layoutY="98.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="80.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="420.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="140.0" text="to Photos" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="37.0" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="107.0" layoutY="210.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="93.0" text="Delete Tag" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="13.0" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="210.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="93.0" text="Add Tag" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="111.0" />
-                  <Button layoutX="17.0" layoutY="382.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Previous" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="119.0" />
-                  <ListView layoutX="7.0" layoutY="29.0" prefHeight="171.0" prefWidth="200.0" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="420.0" mnemonicParsing="false" onAction="#toPhotos" prefHeight="26.0" prefWidth="140.0" text="to Photos" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="37.0" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="107.0" layoutY="210.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="26.0" prefWidth="93.0" text="Delete Tag" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="13.0" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="210.0" mnemonicParsing="false" onAction="#addTag" prefHeight="26.0" prefWidth="93.0" text="Add Tag" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="111.0" />
+                  <Button layoutX="17.0" layoutY="382.0" mnemonicParsing="false" onAction="#prevPhoto" prefHeight="25.0" prefWidth="77.0" text="Previous" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="119.0" />
+                  <ListView fx:id="tagList" layoutX="7.0" layoutY="29.0" prefHeight="171.0" prefWidth="200.0" />
                   <Label layoutX="94.0" layoutY="6.0" text="Tags" />
-                  <Button layoutX="124.0" layoutY="382.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Next" />
-                  <Button layoutX="68.0" layoutY="282.0" mnemonicParsing="false" text="Copy Photo" />
-                  <Button layoutX="68.0" layoutY="323.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Move Photo" />
+                  <Button layoutX="124.0" layoutY="382.0" mnemonicParsing="false" onAction="#nextPhoto" prefHeight="25.0" prefWidth="77.0" text="Next" />
+                  <Button layoutX="68.0" layoutY="282.0" mnemonicParsing="false" onAction="#copyPhoto" text="Copy Photo" />
+                  <Button layoutX="68.0" layoutY="323.0" mnemonicParsing="false" onAction="#movePhoto" prefHeight="25.0" prefWidth="79.0" text="Move Photo" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="426.0">
                <children>
                   <ImageView fitHeight="312.0" fitWidth="397.0" layoutX="143.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="74.0" layoutY="415.0" mnemonicParsing="false" prefHeight="5.0" prefWidth="139.0" text="Edit Caption" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="469.0" />
-                  <Label layoutX="122.0" layoutY="386.0" text="Caption" />
-                  <Label layoutX="462.0" layoutY="395.0" text="Taken Date" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="74.0" layoutY="415.0" mnemonicParsing="false" onAction="#editCaption" prefHeight="5.0" prefWidth="139.0" text="Edit Caption" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="469.0" />
+                  <Label fx:id="caption" layoutX="122.0" layoutY="386.0" text="Caption" />
+                  <Label fx:id="dateLabel" layoutX="462.0" layoutY="395.0" text="Taken Date" />
                </children>
             </AnchorPane>
         </items>
