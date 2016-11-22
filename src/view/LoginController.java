@@ -1,7 +1,12 @@
 package view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +18,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.SessionManager;
 import model.User;
+
 
 public class LoginController {
 	@FXML
@@ -24,9 +31,37 @@ public class LoginController {
 	private ObservableList<User> obsList;
 	Stage prevStage;
 	
-	public void start(Stage primaryStage) {
-		obsList = FXCollections.observableArrayList();
-		userList.setItems(obsList);
+	SessionManager sMan = null;
+	public void start(Stage primaryStage) throws ClassNotFoundException, IOException {
+		File data = new File("dat"+File.separator+"sessions.dat");
+		if(data.exists() && !data.isDirectory()){
+			try{
+				sMan = SessionManager.readApp();
+			}catch(Exception e){
+				sMan = new SessionManager();
+			}
+		}
+		else
+			sMan = new SessionManager();
+
+		
+		username.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				//FXCollections.sort(obsList);
+				List<User> test = sMan.searchUsers(username.getText().toString());
+				System.out.println(username.getText().toString());
+				if(test != null){
+					obsList = FXCollections.observableArrayList(sMan.searchUsers(username.getText().toString()));
+					userList.setItems(obsList);
+				}
+				//userList.setItems(value);
+				//
+			}
+		});
+		//obsList = FXCollections.observableArrayList();
+		//userList.setItems(obsList);
+		
 		
 		
 		primaryStage.setOnCloseRequest(event -> {
@@ -34,7 +69,6 @@ public class LoginController {
 			
 		});
 		
-		username.setText("");
 	}
 	
 	@FXML

@@ -18,7 +18,7 @@ public class PhotoAlbum extends Application {
 			
 			LoginController lControl = (LoginController)loader.getController();
 			lControl.setPrevStage(primaryStage);
-			
+			lControl.start(primaryStage);
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setTitle("Photo Album - Rumzi Tadros & Andrew Wang");
 			primaryStage.setScene(scene);

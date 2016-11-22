@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements Serializable{
+public class User implements Serializable, Comparable<User>{
 	private String username;
 	private List<Album> albums;
 	private List<Photo> photos;
@@ -79,5 +79,10 @@ public class User implements Serializable{
 			User user = (User)ois.readObject();
 			ois.close();
 			return user;
+		}
+
+		@Override
+		public int compareTo(User o) {
+			return this.username.compareTo(o.toString());
 		}
 }

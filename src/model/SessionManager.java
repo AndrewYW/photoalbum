@@ -22,8 +22,9 @@ public class SessionManager implements Serializable{
 		/* Only needs to be called once ever
 		 * Serialize and reload this object
 		 */
-		List<User> users = new ArrayList<User>();
-		users.add(new User("Admin"));
+		users = new ArrayList<User>();
+		users.add(new User("admin"));
+		current_user_index = -1;
 	}
 	
 	/*	Search Users.
@@ -31,7 +32,7 @@ public class SessionManager implements Serializable{
 	 * 	Used for the log in page.
 	 */
 	public List<User> searchUsers(String s){
-		if(current_user_index != -1){
+		if(current_user_index == -1){
 			List<User> return_list = new ArrayList<User>();
 			for(User u : users){
 				if(u.toString().startsWith(s)){
@@ -63,11 +64,10 @@ public class SessionManager implements Serializable{
 	}
 	
 	//**********EVERYTHING FROM HERE ON REQUIRES YOU TO BE LOGGED IN**********
-	
 	/* Serializes all objects used by the user
 	 * closes the session by resetting the user index
 	 */
-	public void logout(){
+	public void logout() throws IOException{
 		if(current_user_index != -1){
 			SessionManager.writeApp(this);
 			current_user_index = -1;
