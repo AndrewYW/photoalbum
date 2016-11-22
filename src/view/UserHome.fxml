@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -11,32 +11,29 @@
 <AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserController">
    <children>
       <Button mnemonicParsing="false" onAction="#openAlbum" prefHeight="25.0" prefWidth="106.0" text="Open Album" />
-      <Button mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="106.0" text="Rename Album" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="86.0" AnchorPane.rightAnchor="490.0" />
-      <Button mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="106.0" text="Delete Album" AnchorPane.bottomAnchor="50.0" />
-      <Label fx:id="albumName" text="Album Name">
-         <font>
-            <Font name="Bernard MT Condensed" size="27.0" />
-         </font>
-      </Label>
-      <Label fx:id="oldestPhoto" text="Label" />
-      <Label fx:id="photoCount" text="Label" />
-      <Label fx:id="dateRange" text="Label" />
+      <Button layoutX="371.0" layoutY="429.0" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="26.0" prefWidth="130.0" text="Rename Album" AnchorPane.bottomAnchor="45.0" />
+      <Button layoutX="575.0" layoutY="429.0" mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="26.0" prefWidth="130.0" text="Delete Album" AnchorPane.bottomAnchor="45.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a6acb2" height="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="50.0" text="Logout" AnchorPane.rightAnchor="0.0">
          <font>
             <Font name="Laksaman" size="9.0" />
          </font>
       </Button>
-      <Button layoutX="46.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" onAction="#searchPhotos" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.rightAnchor="690.0" />
-      <TableView prefHeight="200.0" prefWidth="200.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="Album" />
-          <TableColumn prefWidth="75.0" text="# Photos" />
-            <TableColumn prefWidth="99.0" text="Oldest" />
-            <TableColumn prefWidth="99.0" text="Newest" />
-        </columns>
-      </TableView>
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createAlbum" prefHeight="26.0" prefWidth="140.0" text="Create Album" />
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="426.0" />
+      <Button layoutX="1.0" layoutY="2.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" onAction="#searchPhotos" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="700.0" AnchorPane.topAnchor="0.0" />
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="204.0" layoutY="1.0" mnemonicParsing="false" onAction="#createAlbum" prefHeight="26.0" prefWidth="140.0" text="Create Album" />
+    <AnchorPane layoutX="243.0" layoutY="56.0" minHeight="0.0" minWidth="0.0" prefHeight="354.0" prefWidth="393.0">
+         <children>
+            <TableView fx:id="albumList" layoutX="-111.0" layoutY="31.0" prefHeight="354.0" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-111.0" AnchorPane.rightAnchor="-104.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="albumNameCol" prefWidth="255.0" text="Album" />
+                <TableColumn fx:id="albumNumPhotoCol" minWidth="0.0" prefWidth="90.0" text="# Photos" />
+                  <TableColumn fx:id="albumOldCol" prefWidth="120.0" text="Oldest" />
+                  <TableColumn fx:id="albumNewCol" prefWidth="142.0" text="Newest" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <TextField fx:id="albumFilter" layoutX="318.0" layoutY="30.0" prefHeight="26.0" prefWidth="238.0" promptText="Filter Albums by name..." />
+      <Button layoutX="161.0" layoutY="429.0" mnemonicParsing="false" onAction="#openAlbum" prefHeight="26.0" prefWidth="130.0" text="Open Album" />
    </children>
 </AnchorPane>

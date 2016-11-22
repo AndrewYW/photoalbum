@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.SessionManager;
@@ -19,6 +20,8 @@ public class PhotoViewController {
 	private Label caption;
 	@FXML
 	private Label dateLabel;
+	@FXML
+	private TextField editField;
 	private Stage prevStage;
 	private SessionManager sMan;
 	

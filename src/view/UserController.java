@@ -3,21 +3,25 @@ package view;
 import java.io.IOException;
 import java.util.Optional;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Album;
 import model.SessionManager;
-import model.User;
 
 public class UserController {
 	private Stage prevStage;
@@ -25,30 +29,56 @@ public class UserController {
 	private ObservableList<Album> obsList = FXCollections.observableArrayList();
 	
 	@FXML
-	private ListView<Album> albumList;
+	private TableView<Album> albumList;
 	@FXML
-	private Label albumName;
+	private TableColumn<Album, String> albumNameCol;
 	@FXML
-	private Label photoCount;
+	private TableColumn<Album, String> albumNumPhotoCol;
 	@FXML
-	private Label oldestPhoto;
+	private TableColumn<Album, String> albumOldCol;
 	@FXML
-	private Label dateRange;
+	private TableColumn<Album, String> albumNewCol;
+	@FXML
+	private TextField albumFilter;
 	
 	public void getSM(SessionManager sm){
 		this.sMan = sm;
 	}
 	public void setPrevStage(Stage stage){
 		this.prevStage = stage;
-		
-		for(Album album : sMan.myAlbums()){
-			obsList.add(album);
-		}
-		albumList.setItems(obsList);
-		if(!obsList.isEmpty())
+		if(sMan.myAlbums() != null){
+			for(Album album : sMan.myAlbums()){
+				obsList.add(album);
+			}
+			if(!obsList.isEmpty()){
+			albumList.setItems(obsList);
+	
+			albumNameCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
+				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
+					return new ReadOnlyObjectWrapper(p.getValue().getTitle());
+				}
+			});
+			albumNumPhotoCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
+				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
+					return new ReadOnlyObjectWrapper(Integer.toString(p.getValue().countPhotos()));
+				}
+			});
+			albumOldCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
+				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
+					return new ReadOnlyObjectWrapper(p.getValue().olderDate().toString());
+				}
+			});
+			albumNewCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
+				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
+					return new ReadOnlyObjectWrapper(p.getValue().newestDate().toString());
+				}
+			});
+	
 			albumList.getSelectionModel().selectFirst();
-		showAlbumDetails();
-		albumList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)-> showAlbumDetails());
+		}
+		}
+		//showAlbumDetails();
+		//albumList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)-> showAlbumDetails());
 		
 	}
 	@FXML
@@ -116,7 +146,7 @@ public class UserController {
 		dialog.setContentText("Please enter new album title:");
 		Optional<String> result = dialog.showAndWait();
 		result.ifPresent(name -> albumList.getSelectionModel().getSelectedItem().editTitle(name));
-		showAlbumDetails();
+		//showAlbumDetails();
 	}
 	@FXML
 	private void openAlbum(){
@@ -129,11 +159,11 @@ public class UserController {
 		SearchController sControl = (SearchController) loader.getController();
 		sControl.setPrevStage(prevStage);
 		Scene scene = new Scene(searchLayout);
-		prevStage.setTitle("Photo Album - Rumzi Tadros & Andrew Wang");
+		prevStage.setTitle("Search Window");
 		prevStage.setScene(scene);
 		prevStage.show();
 	}
-	
+	/*
 	private void showAlbumDetails(){
 		if(albumList.getSelectionModel().getSelectedIndex() < 0){
 			return;
@@ -150,4 +180,5 @@ public class UserController {
 			dateRange.setText(album.olderDate() + " - " + album.newestDate());
 		}
 	}
+	*/
 }
