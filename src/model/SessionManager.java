@@ -37,7 +37,7 @@ public class SessionManager implements Serializable{
 		if(current_user_index == -1){
 			List<User> return_list = new ArrayList<User>();
 			for(User u : users){
-				if(u.toString().startsWith(s)){
+				if(u.toString().toLowerCase().startsWith(s.toLowerCase())){
 					return_list.add(u);
 				}
 			}
@@ -71,8 +71,8 @@ public class SessionManager implements Serializable{
 	 */
 	public void logout() throws IOException{
 		if(current_user_index != -1){
-			SessionManager.writeApp(this);
 			current_user_index = -1;
+			SessionManager.writeApp(this);
 		}
 	}
 	
@@ -259,7 +259,10 @@ public class SessionManager implements Serializable{
 	 */
 	public List<User> listUsers(){
 		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0){
-			return users;
+			List<User> return_list = new ArrayList<User>();
+			return_list.addAll(users);
+			return_list.remove(0);
+			return return_list;
 		}
 		return null;
 	}
@@ -277,7 +280,6 @@ public class SessionManager implements Serializable{
 				return -1;
 			}
 			for(User u : users){
-				System.out.println("Checking: " + u);
 				if(u.toString().compareTo(username) == 0){
 					return 1;
 				}
