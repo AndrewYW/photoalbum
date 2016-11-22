@@ -14,8 +14,8 @@
             <Font name="Britannic Bold" size="54.0" />
          </font>
       </Text>
-      <ListView layoutX="150.0" layoutY="256.0" prefHeight="139.0" prefWidth="200.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
-      <Button layoutX="175.0" layoutY="409.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="Login" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" />
-      <TextField layoutX="175.0" layoutY="213.0" promptText="Username" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" />
+      <ListView fx:id="userList" layoutX="150.0" layoutY="256.0" prefHeight="139.0" prefWidth="200.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
+      <Button layoutX="175.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="138.0" text="Login" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" />
+      <TextField fx:id="username" layoutX="175.0" layoutY="213.0" promptText="Username" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" />
    </children>
 </AnchorPane>

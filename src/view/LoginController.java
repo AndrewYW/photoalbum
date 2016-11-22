@@ -39,7 +39,7 @@ public class LoginController {
 	
 	@FXML
 	private void handleLogin() throws IOException {
-		if(userList.getSelectionModel() == null) {
+		if(userList.getSelectionModel().getSelectedItem() == null) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("WARNING");
 			alert.setHeaderText("No user selected");
