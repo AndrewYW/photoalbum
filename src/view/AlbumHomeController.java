@@ -21,6 +21,7 @@ public class AlbumHomeController {
 	private Label albumName;
 	@FXML
 	private GridPane grid;
+	
 	private SessionManager sMan;
 	private Stage prevStage;
 	
@@ -38,6 +39,10 @@ public class AlbumHomeController {
 	}
 	@FXML
 	private void slideshow(){
+		
+	}
+	@FXML
+	private void searchPhotos(){
 		
 	}
 	@FXML
