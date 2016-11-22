@@ -4,12 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.PhotoViewController">
+<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.PhotoViewController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a6acb2" height="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="50.0" text="Logout" AnchorPane.rightAnchor="0.0">
@@ -30,7 +31,7 @@
                   <Label layoutX="94.0" layoutY="6.0" text="Tags" />
                   <Button layoutX="124.0" layoutY="382.0" mnemonicParsing="false" onAction="#nextPhoto" prefHeight="25.0" prefWidth="77.0" text="Next" />
                   <Button layoutX="68.0" layoutY="282.0" mnemonicParsing="false" onAction="#copyPhoto" text="Copy Photo" />
-                  <Button layoutX="68.0" layoutY="323.0" mnemonicParsing="false" onAction="#movePhoto" prefHeight="25.0" prefWidth="79.0" text="Move Photo" />
+                  <Button layoutX="68.0" layoutY="323.0" mnemonicParsing="false" onAction="#movePhoto" prefHeight="26.0" prefWidth="118.0" text="Move Photo" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="426.0">
@@ -39,6 +40,7 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="74.0" layoutY="415.0" mnemonicParsing="false" onAction="#editCaption" prefHeight="5.0" prefWidth="139.0" text="Edit Caption" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="469.0" />
                   <Label fx:id="caption" layoutX="122.0" layoutY="386.0" text="Caption" />
                   <Label fx:id="dateLabel" layoutX="462.0" layoutY="395.0" text="Taken Date" />
+                  <TextField fx:id="editField" layoutX="58.0" layoutY="382.0" />
                </children>
             </AnchorPane>
         </items>

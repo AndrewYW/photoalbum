@@ -5,21 +5,29 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Photo;
 import model.SessionManager;
+import model.Tag;
 
 public class SearchController {
 	@FXML
 	private TextField oldDate;
 	@FXML
 	private TextField newDate;
+
 	@FXML
-	private TextField searchTagText;
+	private ListView<Tag> tagTypes;
 	@FXML
-	private GridPane grid;
+	private ListView<Tag> tagValues;
+	
 	
 	private SessionManager sMan;
 	private Stage prevStage;
@@ -34,10 +42,6 @@ public class SearchController {
 	}
 	@FXML
 	private void searchTagButton(){
-		
-	}
-	@FXML
-	private void createResultAlbum(){
 		
 	}
 	@FXML

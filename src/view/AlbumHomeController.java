@@ -6,24 +6,36 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Photo;
 import model.SessionManager;
 
 public class AlbumHomeController {
+
 	@FXML
-	private ImageView selectImageDisplay;
+	private TableView<Photo> photoTable;
 	@FXML
-	private Label captionLabel;
+	private TableColumn<Photo, ImageView> photoColumn;
 	@FXML
-	private Label albumName;
-	@FXML
-	private GridPane grid;
+	private TableColumn<Photo, String> captionColumn;
 	
 	private SessionManager sMan;
 	private Stage prevStage;
+	
+	
+	public void setPrevStage(Stage stage){
+		//TODO MUST FINISH THIS TO SETUP
+		prevStage = stage;
+	}
+	public void getSM(SessionManager sm){
+		this.sMan = sm;
+	}
+	
 	
 	@FXML
 	private void viewPhoto(){
@@ -42,8 +54,15 @@ public class AlbumHomeController {
 		
 	}
 	@FXML
-	private void searchPhotos(){
-		
+	private void searchPhotos() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SearchHome.fxml"));
+		AnchorPane searchLayout = (AnchorPane) loader.load();
+		SearchController sControl = (SearchController) loader.getController();
+		sControl.setPrevStage(prevStage);
+		Scene scene = new Scene(searchLayout);
+		prevStage.setTitle("Search Window");
+		prevStage.setScene(scene);
+		prevStage.show();
 	}
 	@FXML
 	private void toAlbums() throws IOException{
@@ -72,10 +91,5 @@ public class AlbumHomeController {
 		prevStage.show();
 		sMan.logout();
 	}
-	public void setPrevStage(Stage stage){
-		
-	}
-	public void getSM(SessionManager sm){
-		this.sMan = sm;
-	}
+
 }
