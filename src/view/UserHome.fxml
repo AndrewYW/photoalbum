@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserController">
+<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a6acb2" height="26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="50.0" text="Logout" AnchorPane.rightAnchor="0.0">
@@ -17,7 +17,7 @@
             <Font name="Laksaman" size="9.0" />
          </font>
       </Button>
-      <Button layoutX="46.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.rightAnchor="690.0" />
+      <Button layoutX="46.0" minHeight="-Infinity" minWidth="57.0" mnemonicParsing="false" onAction="#searchPhotos" prefHeight="26.0" prefWidth="213.0" text="Search Photos" AnchorPane.rightAnchor="690.0" />
       <SplitPane dividerPositions="0.23942093541202672" layoutX="200.0" layoutY="98.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="80.0">

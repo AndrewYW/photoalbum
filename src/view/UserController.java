@@ -122,6 +122,17 @@ public class UserController {
 	private void openAlbum(){
 		//TODO 
 	}
+	@FXML
+	private void searchPhotos() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SearchHome.fxml"));
+		AnchorPane searchLayout = (AnchorPane) loader.load();
+		SearchController sControl = (SearchController) loader.getController();
+		sControl.setPrevStage(prevStage);
+		Scene scene = new Scene(searchLayout);
+		prevStage.setTitle("Photo Album - Rumzi Tadros & Andrew Wang");
+		prevStage.setScene(scene);
+		prevStage.show();
+	}
 	
 	private void showAlbumDetails(){
 		if(albumList.getSelectionModel().getSelectedIndex() < 0){

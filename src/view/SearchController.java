@@ -24,6 +24,10 @@ public class SearchController {
 	private SessionManager sMan;
 	private Stage prevStage;
 	
+	public void setPrevStage(Stage stage){
+		prevStage = stage;
+	}
+	
 	@FXML
 	private void searchDateButton(){
 		
@@ -63,9 +67,7 @@ public class SearchController {
 		prevStage.show();
 		sMan.logout();
 	}
-	public void setPrevStage(Stage stage){
-		
-	}
+
 	public void getSM(SessionManager sm){
 		this.sMan = sm;
 	}
