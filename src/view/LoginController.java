@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.SessionManager;
 import model.User;
 
@@ -31,7 +33,8 @@ public class LoginController {
 	private ObservableList<User> obsList;
 	Stage prevStage;
 	
-	SessionManager sMan = null;
+	protected static SessionManager sMan = null;
+	
 	public void start(Stage primaryStage) throws ClassNotFoundException, IOException {
 		File data = new File("dat"+File.separator+"sessions.dat");
 		if(data.exists() && !data.isDirectory()){
@@ -44,6 +47,7 @@ public class LoginController {
 		else
 			sMan = new SessionManager();
 
+		cleanExit();
 		
 		username.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -64,11 +68,6 @@ public class LoginController {
 		
 		
 		
-		primaryStage.setOnCloseRequest(event -> {
-			//Serialization on close request
-			
-		});
-		
 	}
 	
 	@FXML
@@ -80,22 +79,33 @@ public class LoginController {
 			alert.setContentText("Please select a user");
 			alert.showAndWait();
 		}else if(userList.getSelectionModel().getSelectedItem().toString().equals("admin")){
-			prevStage.setTitle("Admin panel");
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminHome.fxml"));
-			AnchorPane adminLayout = (AnchorPane) loader.load();
-			AdminController aControl = (AdminController) loader.getController();
-			//Pass in admin user necessary? Or skip to page (since no additional fields for admin)
-			
-			Scene scene = new Scene(adminLayout);
-			prevStage.setScene(scene);
-			prevStage.show();
+			if(sMan.login(userList.getSelectionModel().getSelectedItem())){
+				prevStage.setTitle("Admin panel");
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminHome.fxml"));
+				AnchorPane adminLayout = (AnchorPane) loader.load();
+				AdminController aControl = (AdminController) loader.getController();
+				aControl.getSM(sMan);
+				aControl.setPrevStage(prevStage);
+				if(sMan.isLoggedIn()){
+					Scene scene = new Scene(adminLayout);
+					prevStage.setScene(scene);
+					prevStage.show();
+				}
+			}
 		}else{
-			prevStage.setTitle("User Home");
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserHome.fxml"));
-			AnchorPane adminLayout = (AnchorPane) loader.load();
-			AlbumController aControl = (AlbumController) loader.getController();
-			//Must pass in User 
-			
+			if(sMan.login(userList.getSelectionModel().getSelectedItem())){
+				prevStage.setTitle("User Home");
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserHome.fxml"));
+				AnchorPane albumLayout = (AnchorPane) loader.load();
+				UserController uControl = (UserController) loader.getController();
+				uControl.getSM(sMan);
+				uControl.setPrevStage(prevStage);
+				if(sMan.isLoggedIn()){
+					Scene scene = new Scene(albumLayout);
+					prevStage.setScene(scene);
+					prevStage.show();
+				}
+			}
 			
 		}
 	}
@@ -104,5 +114,20 @@ public class LoginController {
 		this.prevStage = stage;
 	}
 	
+	private void cleanExit(){
+		prevStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent e) {
+				try {
+					sMan.logout();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.out.println("Safely closed");
+				System.exit(0);
+			}
+		});
+	}
 	
 }

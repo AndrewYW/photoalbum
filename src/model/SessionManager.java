@@ -9,10 +9,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class SessionManager implements Serializable{
-	private List<User> users;
-	private int current_user_index;
+	public List<User> users;
+	public int current_user_index;
 	//FOR SERIALIZER
 	public static final String storeDir = "dat";
 	public static final String storeFile = "sessions.dat";
@@ -24,6 +25,7 @@ public class SessionManager implements Serializable{
 		 */
 		users = new ArrayList<User>();
 		users.add(new User("admin"));
+		users.add(new User("bob"));
 		current_user_index = -1;
 	}
 	
@@ -158,7 +160,7 @@ public class SessionManager implements Serializable{
 	public List<Album> searchAlbums(String s){
 		if(current_user_index != -1){
 			List<Album> return_list = new ArrayList<Album>();
-			for(Album a : this.myAblums()){
+			for(Album a : this.myAlbums()){
 				if(a.getTitle().startsWith(s)){
 					return_list.add(a);
 				}
@@ -171,7 +173,7 @@ public class SessionManager implements Serializable{
 	/* Returns list of albums
 	 * Used for the initial screen after login
 	 */
-	public List<Album> myAblums(){
+	public List<Album> myAlbums(){
 		if(current_user_index != -1){
 			return users.get(this.current_user_index).getAlbum_List();
 		}
@@ -270,17 +272,18 @@ public class SessionManager implements Serializable{
 	 * -2 -> not logged in as admin
 	 */
 	public int createUser(String username){
-		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0 && !username.matches("[a-zA-Z]+")){
-			if(username.isEmpty() || username.length() > 15){
+		if(current_user_index != -1 && users.get(current_user_index).toString().compareTo("admin")==0){
+			if(username.isEmpty() || username.length() > 15 || !Pattern.matches("[a-zA-Z]+", username)){
 				return -1;
 			}
 			for(User u : users){
+				System.out.println("Checking: " + u);
 				if(u.toString().compareTo(username) == 0){
 					return 1;
 				}
 			}
-			users.add(new User(username));
-			return 0;
+				users.add(new User(username));
+				return 0;
 		}
 		return -2;
 	}

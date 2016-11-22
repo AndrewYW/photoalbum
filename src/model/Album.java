@@ -32,8 +32,18 @@ public class Album implements Serializable{
 	public String getTitle(){
 		return title;
 	}
-	
+	/**
+	 * Oddly enough, this is required for the album name to be interpreted as a string
+	 */
+	public String toString(){
+		return title;
+	}
+	public void editTitle(String s){
+		title = s;
+	}
 	public int countPhotos(){
+		if(this.photos == null)
+			return 0;
 		return photos.size();
 	}
 	
