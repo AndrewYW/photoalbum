@@ -15,6 +15,7 @@ public class Album implements Serializable{
 	private List<Photo> photos;
 	private SimpleDate oldest;
 	private SimpleDate newest;
+	private int numberOfPhotos;
 	//FOR SERIALIZER
 	public static final String storeDir = "dat";
 	public static final String storeFile = "album.dat";
@@ -22,11 +23,23 @@ public class Album implements Serializable{
 	
 	public Album(String t){
 		title = t;
+		numberOfPhotos = 0;
 	}
 	
 	public Album(String t, List<Photo> p){
 		title = t;
 		photos = p;
+		if(p != null){
+			numberOfPhotos = photos.size();
+			for(Photo aPhoto : p){
+				if(oldest == null || oldest.getCompareValue() > aPhoto.getDate().getCompareValue()){
+					oldest = aPhoto.getDate();
+				}
+				if(newest == null || newest.getCompareValue() < aPhoto.getDate().getCompareValue()){
+					newest = aPhoto.getDate();
+				}
+			}
+		}
 	}
 	
 	public String getTitle(){
@@ -34,24 +47,26 @@ public class Album implements Serializable{
 	}
 	/**
 	 * Oddly enough, this is required for the album name to be interpreted as a string
-	 */
+	 * 
+	 * There are already methods that do both of these things.
+	 * 	-Rumzi
+	 * 
 	public String toString(){
 		return title;
 	}
 	public void editTitle(String s){
 		title = s;
 	}
-	public int countPhotos(){
-		if(this.photos == null)
-			return 0;
-		return photos.size();
+	*/
+	public int getNumberOfPhotos(){
+		return numberOfPhotos;
 	}
 	
-	public SimpleDate olderDate(){
+	public SimpleDate getOldest(){
 		return oldest;
 	}
 	
-	public SimpleDate newestDate(){
+	public SimpleDate getNewest(){
 		return newest;
 	}
 
@@ -61,10 +76,12 @@ public class Album implements Serializable{
 	
 	public void addPhoto(Photo p){
 		photos.add(p);
+		numberOfPhotos++;
 	}
 	
 	public void deletePhoto(Photo p){
 		photos.remove(p);
+		numberOfPhotos--;
 	}
 	
 	public List<Photo> openAlbum(){

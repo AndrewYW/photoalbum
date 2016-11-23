@@ -3,8 +3,7 @@ package view;
 import java.io.IOException;
 import java.util.Optional;
 
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
+import application.PhotoAlbum;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,20 +11,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.Album;
-import model.SessionManager;
 
 public class UserController {
 	private Stage prevStage;
-	private SessionManager sMan;
 	private ObservableList<Album> obsList = FXCollections.observableArrayList();
 	
 	@FXML
@@ -41,49 +37,36 @@ public class UserController {
 	@FXML
 	private TextField albumFilter;
 	
-	public void getSM(SessionManager sm){
-		this.sMan = sm;
-	}
 	public void setPrevStage(Stage stage){
 		this.prevStage = stage;
-		if(sMan.myAlbums() != null){
-			for(Album album : sMan.myAlbums()){
-				obsList.add(album);
-			}
-			if(!obsList.isEmpty()){
-			albumList.setItems(obsList);
+		if(PhotoAlbum.sMan.myAlbums() != null){
+			
+			albumNameCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+			albumNumPhotoCol.setCellValueFactory(new PropertyValueFactory<>("numberOfPhotos"));
+			albumOldCol.setCellValueFactory(new PropertyValueFactory<>("oldest"));
+			albumNewCol.setCellValueFactory(new PropertyValueFactory<>("newest"));
+			//albumList.getColumns().add(albumNameCol);
+			//albumList.getColumns().add(albumNumPhotoCol);
+			//albumList.getColumns().add(albumOldCol);
+			//albumList.getColumns().add(albumNewCol);
+			loadAlbums();
+		}		
+	}
 	
-			albumNameCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
-				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
-					return new ReadOnlyObjectWrapper(p.getValue().getTitle());
-				}
-			});
-			albumNumPhotoCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
-				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
-					return new ReadOnlyObjectWrapper(Integer.toString(p.getValue().countPhotos()));
-				}
-			});
-			albumOldCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
-				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
-					return new ReadOnlyObjectWrapper(p.getValue().olderDate().toString());
-				}
-			});
-			albumNewCol.setCellValueFactory(new Callback<CellDataFeatures<Album, String>, ObservableValue<String>>(){
-				public ObservableValue<String> call(CellDataFeatures<Album, String> p){
-					return new ReadOnlyObjectWrapper(p.getValue().newestDate().toString());
-				}
-			});
-	
+	private void loadAlbums(){
+		obsList.clear();
+		for(Album album : PhotoAlbum.sMan.myAlbums()){
+			obsList.add(album);
+		}
+		if(!obsList.isEmpty()){
+			albumList.setItems(obsList);	
 			albumList.getSelectionModel().selectFirst();
 		}
-		}
-		//showAlbumDetails();
-		//albumList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)-> showAlbumDetails());
-		
 	}
+	
 	@FXML
-	private void logout() throws IOException{
-		
+	private void logout() throws IOException, ClassNotFoundException{
+		PhotoAlbum.sMan.logout();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginPage.fxml"));
 		AnchorPane rootLayout = (AnchorPane) loader.load();
 		LoginController lControl = (LoginController) loader.getController();
@@ -92,8 +75,8 @@ public class UserController {
 		prevStage.setTitle("Photo Album - Rumzi Tadros & Andrew Wang");
 		prevStage.setScene(scene);
 		prevStage.show();
-		sMan.logout();
 	}
+	
 	@FXML
 	private void createAlbum(){
 		TextInputDialog dialog = new TextInputDialog();
@@ -103,8 +86,8 @@ public class UserController {
 		Optional<String> result = dialog.showAndWait();
 		String test = result.toString();
 		//TODO prevent existing album  name overlap
-		for(Album b : sMan.myAlbums()){
-			if(b.getTitle().equals(test)){
+		for(Album b : PhotoAlbum.sMan.myAlbums()){
+			if(b.getTitle().compareTo(test) == 0){
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("WARNING");
 				alert.setHeaderText("Album already exists");
@@ -114,43 +97,36 @@ public class UserController {
 			}else{
 			}
 		}
-		result.ifPresent(name -> sMan.createAlbum(name));
-		
-		obsList.clear();
-		for(Album album : sMan.myAlbums()){
-			obsList.add(album);
-		}
-		if(!obsList.isEmpty()){
-			albumList.setItems(obsList);
-			albumList.getSelectionModel().selectFirst();
-		}
+		result.ifPresent(name -> PhotoAlbum.sMan.createAlbum(name));
+		loadAlbums();
 	}
 	@FXML
 	private void deleteAlbum(){
-		sMan.deleteAlbum(albumList.getSelectionModel().getSelectedItem());
-		obsList.clear();
-		for(Album album : sMan.myAlbums()){
-			obsList.add(album);
-		}
-		if(!obsList.isEmpty()){
-			albumList.setItems(obsList);
-			albumList.getSelectionModel().selectFirst();
-		}
+		PhotoAlbum.sMan.deleteAlbum(albumList.getSelectionModel().getSelectedItem());
+		loadAlbums();
 	}
 	@FXML
 	private void renameAlbum(){
-		//TODO must finish
+		//TODO prevent existing album  name overlap
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Rename Album");
 		dialog.setHeaderText("");
 		dialog.setContentText("Please enter new album title:");
 		Optional<String> result = dialog.showAndWait();
-		result.ifPresent(name -> albumList.getSelectionModel().getSelectedItem().editTitle(name));
-		//showAlbumDetails();
+		result.ifPresent(name -> albumList.getSelectionModel().getSelectedItem().rename(name));
+		obsList.clear();
+		loadAlbums();
 	}
 	@FXML
-	private void openAlbum(){
-		//TODO 
+	private void openAlbum() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumHome.fxml"));
+		AnchorPane PhotosLayout = (AnchorPane) loader.load();
+		AlbumHomeController aHomeControl = (AlbumHomeController) loader.getController();
+		aHomeControl.setPrevStage(prevStage);
+		Scene scene = new Scene(PhotosLayout);
+		prevStage.setTitle("Search Window");
+		prevStage.setScene(scene);
+		prevStage.show();
 	}
 	@FXML
 	private void searchPhotos() throws IOException{
@@ -163,22 +139,4 @@ public class UserController {
 		prevStage.setScene(scene);
 		prevStage.show();
 	}
-	/*
-	private void showAlbumDetails(){
-		if(albumList.getSelectionModel().getSelectedIndex() < 0){
-			return;
-		}
-		
-		Album album = albumList.getSelectionModel().getSelectedItem();
-		albumName.setText(album.getTitle());
-		photoCount.setText(album.countPhotos() + " Photos");
-		if(album.olderDate() == null){
-			oldestPhoto.setVisible(false);
-			dateRange.setVisible(false);
-		}else{
-			oldestPhoto.setText("Oldest Photo: " + album.olderDate().toString());
-			dateRange.setText(album.olderDate() + " - " + album.newestDate());
-		}
-	}
-	*/
 }
