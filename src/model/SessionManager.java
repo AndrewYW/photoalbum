@@ -15,6 +15,7 @@ public class SessionManager implements Serializable{
 	private List<User> users;
 	private int current_user_index;
 	private Album currentAlbum;
+	private Photo currentPhoto;
 	//FOR SERIALIZER
 	public static final String storeDir = "dat";
 	public static final String storeFile = "sessions.dat";
@@ -28,6 +29,7 @@ public class SessionManager implements Serializable{
 		users.add(new User("admin"));
 		current_user_index = -1;
 		currentAlbum = null;
+		currentPhoto = null;
 	}
 	
 	public Album getCurrentAlbum(){
@@ -35,6 +37,12 @@ public class SessionManager implements Serializable{
 	}
 	public void setCurrentAlbum(Album a){
 		currentAlbum = a;
+	}
+	public Photo getCurrentPhoto(){
+		return currentPhoto;
+	}
+	public void setCurrentPhoto(Photo p){
+		currentPhoto = p;
 	}
 	
 	/*	Search Users.

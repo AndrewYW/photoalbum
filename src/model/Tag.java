@@ -50,6 +50,11 @@ public class Tag implements Serializable{
 	}
 	
 	@Override
+	public String toString(){
+		return this.type +":"+this.getValue();
+	}
+	
+	@Override
 	public boolean equals(Object o){
 	    //not equal if object points to nothing
 	    if (o == null)
