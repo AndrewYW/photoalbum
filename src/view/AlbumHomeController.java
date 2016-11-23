@@ -7,24 +7,33 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Album;
 import model.Photo;
 import model.SimpleDate;
-
+/**
+ * Controller for Album home page. Holds a tableview of photos and some buttons.
+ * @author Rumzi Tadros
+ *
+ */
 public class AlbumHomeController {
 	private ObservableList<Photo> obsList = FXCollections.observableArrayList();
 	private Album thisAlbum = PhotoAlbum.sMan.getCurrentAlbum();
 	@FXML
 	private TableView<Photo> photoTable;
 	@FXML
-	private TableColumn<Photo, ImageView> photoColumn;
+	private TableColumn<Photo, Image> photoColumn;
 	@FXML
 	private TableColumn<Photo, String> captionColumn;
 	private Stage prevStage;
@@ -33,11 +42,30 @@ public class AlbumHomeController {
 	public void setPrevStage(Stage stage){
 		//TODO MUST FINISH THIS TO SETUP
 		if(thisAlbum.openAlbum() != null){
-			photoColumn.setCellValueFactory(new PropertyValueFactory<>("path"));
+			photoColumn.setCellFactory(new Callback<TableColumn<Photo, Image>,
+						TableCell<Photo, Image>>() {
+				@Override
+				public TableCell<Photo, Image> call(TableColumn<Photo, Image> param) {
+					
+					final ImageView imageView = new ImageView();
+					imageView.setFitHeight(50);
+					imageView.setFitWidth(50);
+					TableCell<Photo, Image> cell = new TableCell<Photo, Image>() {
+						public void updateItem(Photo photo, boolean empty) {
+							if(photo != null) {
+								//imageView.setImage(photo.getPath());
+							}
+						}
+					};
+					cell.setGraphic(imageView);
+					return cell;
+				}
+			});
 			captionColumn.setCellValueFactory(new PropertyValueFactory<>("caption"));
 			loadPhotos();
 		}
 		prevStage = stage;
+		
 	}
 	
 	private void loadPhotos(){
@@ -58,7 +86,7 @@ public class AlbumHomeController {
 		PhotoViewController pControl = (PhotoViewController) loader.getController();
 		pControl.setPrevStage(prevStage);
 		Scene scene = new Scene(searchLayout);
-		prevStage.setTitle("Search Window");
+		prevStage.setTitle("Photo View");
 		prevStage.setScene(scene);
 		prevStage.show();
 	}
@@ -67,7 +95,6 @@ public class AlbumHomeController {
 		String path = "test/test/test";
 		String caption = "I wish this worked";
 		SimpleDate date = new SimpleDate(8574837547L);
-		//TODO andrew do this
 		Photo p = new Photo(path, caption, date);
 		PhotoAlbum.sMan.addPhoto(p, thisAlbum);
 		loadPhotos();
@@ -78,8 +105,15 @@ public class AlbumHomeController {
 		loadPhotos();
 	}
 	@FXML
-	private void slideshow(){
-		
+	private void slideshow() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoView.fxml"));
+		AnchorPane photoLayout = (AnchorPane) loader.load();
+		PhotoViewController pControl = (PhotoViewController) loader.getController();
+		pControl.setPrevStage(prevStage);		//needs to select first photo -- new method?
+		Scene scene = new Scene(photoLayout);
+		prevStage.setTitle("Slideshow");
+		prevStage.setScene(scene);
+		prevStage.show();
 	}
 	@FXML
 	private void searchPhotos() throws IOException{

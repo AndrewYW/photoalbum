@@ -10,7 +10,12 @@ import view.LoginController;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
-
+/**
+ * Main class to launch application.
+ * @author Andrew Wang
+ * @author Rumzi Tadros
+ *
+ */
 public class PhotoAlbum extends Application {
 	public static SessionManager sMan = null;
 	@Override

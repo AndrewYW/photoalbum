@@ -22,8 +22,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Album;
-import model.User;
 
+/**
+ * Controller for the User home page. Displays table of albums, with their specifics.
+ * @author Rumzi Tadros
+ * @author Andrew Wang
+ *
+ */
 public class UserController {
 	private Stage prevStage;
 	private ObservableList<Album> obsList = FXCollections.observableArrayList();
@@ -41,6 +46,11 @@ public class UserController {
 	@FXML
 	private TextField albumFilter;
 	
+	/**
+	 * Initialization method for the User home page.
+	 * Includes a tableview, and listener for album name filtering.
+	 * @param stage The User home stage.
+	 */
 	public void setPrevStage(Stage stage){
 		this.prevStage = stage;
 		if(PhotoAlbum.sMan.myAlbums() != null){
@@ -49,18 +59,12 @@ public class UserController {
 			albumNumPhotoCol.setCellValueFactory(new PropertyValueFactory<>("numberOfPhotos"));
 			albumOldCol.setCellValueFactory(new PropertyValueFactory<>("oldest"));
 			albumNewCol.setCellValueFactory(new PropertyValueFactory<>("newest"));
-			//albumList.getColumns().add(albumNameCol);
-			//albumList.getColumns().add(albumNumPhotoCol);
-			//albumList.getColumns().add(albumOldCol);
-			//albumList.getColumns().add(albumNewCol);
+
 			loadAlbums();
-			//if(!albumFilter.getText().isEmpty()){
-			//	loadAlbums();
-			//}else{
+
 			albumFilter.textProperty().addListener(new ChangeListener<String>() {
 				@Override
 				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-					System.out.println(albumFilter.getText().toString());
 					List<Album> albums = PhotoAlbum.sMan.searchAlbums(albumFilter.getText().toString());
 					obsList.clear();
 					for(Album album : albums){
@@ -72,10 +76,11 @@ public class UserController {
 					}
 				}
 			});
-			//}
 		}		
 	}
-	
+	/**
+	 * Method to load the albums into the Tableview
+	 */
 	private void loadAlbums(){
 		obsList.clear();
 		for(Album album : PhotoAlbum.sMan.myAlbums()){
@@ -86,7 +91,11 @@ public class UserController {
 			albumList.getSelectionModel().selectFirst();
 		}
 	}
-	
+	/**
+	 * Logout method. Returns user to login page.
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	@FXML
 	private void logout() throws IOException, ClassNotFoundException{
 		PhotoAlbum.sMan.logout();
@@ -99,7 +108,9 @@ public class UserController {
 		prevStage.setScene(scene);
 		prevStage.show();
 	}
-	
+	/**
+	 * Create new album upon pressing button. Checks for already existing album with same name.
+	 */
 	@FXML
 	private void createAlbum(){
 		TextInputDialog dialog = new TextInputDialog();
@@ -108,7 +119,6 @@ public class UserController {
 		dialog.setContentText("Please enter album title:");
 		Optional<String> result = dialog.showAndWait();
 		String test = result.get();
-		//TODO prevent existing album  name overlap
 		for(Album b : PhotoAlbum.sMan.myAlbums()){
 			if(b.getTitle().compareTo(test) == 0){
 				Alert alert = new Alert(AlertType.WARNING);
@@ -123,14 +133,19 @@ public class UserController {
 		result.ifPresent(name -> PhotoAlbum.sMan.createAlbum(name));
 		loadAlbums();
 	}
+	/**
+	 * Removes selected album.
+	 */
 	@FXML
 	private void deleteAlbum(){
 		PhotoAlbum.sMan.deleteAlbum(albumList.getSelectionModel().getSelectedItem());
 		loadAlbums();
 	}
+	/**
+	 * Renames selected album. Checks for duplicate name already existing.
+	 */
 	@FXML
 	private void renameAlbum(){
-		//TODO prevent existing album  name overlap
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Rename Album");
 		dialog.setHeaderText("");
@@ -152,6 +167,10 @@ public class UserController {
 		obsList.clear();
 		loadAlbums();
 	}
+	/**
+	 * Loader to move to the album home page scene.
+	 * @throws IOException
+	 */
 	@FXML
 	private void openAlbum() throws IOException{
 		PhotoAlbum.sMan.setCurrentAlbum(albumList.getSelectionModel().getSelectedItem());
@@ -160,10 +179,14 @@ public class UserController {
 		AlbumHomeController aHomeControl = (AlbumHomeController) loader.getController();
 		aHomeControl.setPrevStage(prevStage);
 		Scene scene = new Scene(PhotosLayout);
-		prevStage.setTitle("Search Window");
+		prevStage.setTitle("Album Home");
 		prevStage.setScene(scene);
 		prevStage.show();
 	}
+	/**
+	 * Loader to move to the search page scene.
+	 * @throws IOException
+	 */
 	@FXML
 	private void searchPhotos() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SearchHome.fxml"));
