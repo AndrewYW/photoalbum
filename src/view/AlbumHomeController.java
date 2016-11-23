@@ -81,6 +81,7 @@ public class AlbumHomeController {
 	
 	@FXML
 	private void viewPhoto() throws IOException{
+		PhotoAlbum.sMan.setCurrentPhoto(photoTable.getSelectionModel().getSelectedItem());
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoView.fxml"));
 		AnchorPane searchLayout = (AnchorPane) loader.load();
 		PhotoViewController pControl = (PhotoViewController) loader.getController();

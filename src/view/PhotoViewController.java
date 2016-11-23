@@ -36,7 +36,7 @@ public class PhotoViewController {
 	public void setPrevStage(Stage stage){
 		editField.setVisible(false);
 		//TODO uncomment this after setting the current photo in album home
-		/*
+		
 		caption.textProperty().setValue(thisPhoto.getCaption());
 		obsList.clear();
 		for(Tag tag : thisPhoto.getTags()){
@@ -46,7 +46,7 @@ public class PhotoViewController {
 			tagList.setItems(obsList);	
 			tagList.getSelectionModel().selectFirst();
 		}
-		*/
+		
 		prevStage = stage;
 	}
 	
@@ -79,7 +79,7 @@ public class PhotoViewController {
 		//needs alert
 	}
 	@FXML
-	private void prevPhoto(){
+	private void prevPhoto() throws IOException{
 		int index = thisAlbum.openAlbum().indexOf(thisPhoto);
 		if((index-1) <0){
 			index = thisAlbum.openAlbum().size() - 1;
