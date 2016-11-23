@@ -25,7 +25,9 @@ public class PhotoViewController {
 	private Stage prevStage;
 	private SessionManager sMan;
 	
-	
+	public void setPrevStage(Stage stage){
+		prevStage = stage;
+	}
 	@FXML
 	private void addTag(){
 		
@@ -63,7 +65,7 @@ public class PhotoViewController {
 		
 	}
 	@FXML
-	private void logout() throws IOException{
+	private void logout() throws IOException, ClassNotFoundException{
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginPage.fxml"));
 		AnchorPane rootLayout = (AnchorPane) loader.load();

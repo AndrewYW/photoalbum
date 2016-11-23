@@ -52,8 +52,15 @@ public class AlbumHomeController {
 	}
 	
 	@FXML
-	private void viewPhoto(){
-		
+	private void viewPhoto() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SearchHome.fxml"));
+		AnchorPane searchLayout = (AnchorPane) loader.load();
+		PhotoViewController pControl = (PhotoViewController) loader.getController();
+		pControl.setPrevStage(prevStage);
+		Scene scene = new Scene(searchLayout);
+		prevStage.setTitle("Search Window");
+		prevStage.setScene(scene);
+		prevStage.show();
 	}
 	@FXML
 	private void addPhoto(){

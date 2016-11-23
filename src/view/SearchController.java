@@ -75,8 +75,4 @@ public class SearchController {
 		prevStage.setScene(scene);
 		prevStage.show();
 	}
-
-	public void getSM(SessionManager sm){
-		this.sMan = sm;
-	}
 }
