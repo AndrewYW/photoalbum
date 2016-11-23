@@ -2,6 +2,9 @@ package view;
 
 import java.io.IOException;
 
+import application.PhotoAlbum;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,19 +15,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Album;
 import model.Photo;
 import model.SessionManager;
 
 public class AlbumHomeController {
-
+	private ObservableList<Photo> obsList = FXCollections.observableArrayList();
+	private Album thisAlbum = PhotoAlbum.sMan.getCurrentAlbum();
 	@FXML
 	private TableView<Photo> photoTable;
 	@FXML
 	private TableColumn<Photo, ImageView> photoColumn;
 	@FXML
 	private TableColumn<Photo, String> captionColumn;
-	
-	private SessionManager sMan;
 	private Stage prevStage;
 	
 	
@@ -32,10 +35,17 @@ public class AlbumHomeController {
 		//TODO MUST FINISH THIS TO SETUP
 		prevStage = stage;
 	}
-	public void getSM(SessionManager sm){
-		this.sMan = sm;
-	}
 	
+	private void loadPhotos(){
+		obsList.clear();
+		for(Photo photo : thisAlbum.openAlbum()){
+			obsList.add(photo);
+		}
+		if(!obsList.isEmpty()){
+			photoList.setItems(obsList);	
+			photoList.getSelectionModel().selectFirst();
+		}
+	}
 	
 	@FXML
 	private void viewPhoto(){
@@ -70,9 +80,9 @@ public class AlbumHomeController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserHome.fxml"));
 		AnchorPane albumLayout = (AnchorPane) loader.load();
 		UserController uControl = (UserController) loader.getController();
-		uControl.getSM(sMan);
+		uControl.getSM(PhotoAlbum.sMan);
 		uControl.setPrevStage(prevStage);
-		if(sMan.isLoggedIn()){
+		if(PhotoAlbum.sMan.isLoggedIn()){
 			Scene scene = new Scene(albumLayout);
 			prevStage.setScene(scene);
 			prevStage.show();
@@ -89,7 +99,7 @@ public class AlbumHomeController {
 		prevStage.setTitle("Photo Album - Rumzi Tadros & Andrew Wang");
 		prevStage.setScene(scene);
 		prevStage.show();
-		sMan.logout();
+		PhotoAlbum.sMan.logout();
 	}
 
 }

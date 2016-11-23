@@ -119,6 +119,7 @@ public class UserController {
 	}
 	@FXML
 	private void openAlbum() throws IOException{
+		PhotoAlbum.sMan.setCurrentAlbum(albumList.getSelectionModel().getSelectedItem());
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumHome.fxml"));
 		AnchorPane PhotosLayout = (AnchorPane) loader.load();
 		AlbumHomeController aHomeControl = (AlbumHomeController) loader.getController();

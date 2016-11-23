@@ -88,11 +88,6 @@ public class Album implements Serializable{
 		return photos;
 	}
 	
-	public String getThumbnail(){
-		Random rand = new Random();
-		return photos.get(rand.nextInt(photos.size())).getPath();
-	}
-	
 	//********************SERIALIZER********************
 		public static void writeApp(Album a)	throws IOException {
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));

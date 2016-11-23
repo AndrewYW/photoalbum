@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class SessionManager implements Serializable{
-	public List<User> users;
-	public int current_user_index;
+	private List<User> users;
+	private int current_user_index;
+	private Album currentAlbum;
 	//FOR SERIALIZER
 	public static final String storeDir = "dat";
 	public static final String storeFile = "sessions.dat";
@@ -25,8 +26,15 @@ public class SessionManager implements Serializable{
 		 */
 		users = new ArrayList<User>();
 		users.add(new User("admin"));
-		users.add(new User("bob"));
 		current_user_index = -1;
+		currentAlbum = null;
+	}
+	
+	public Album getCurrentAlbum(){
+		return currentAlbum;
+	}
+	public void setCurrentAlbum(Album a){
+		currentAlbum = a;
 	}
 	
 	/*	Search Users.
@@ -108,7 +116,7 @@ public class SessionManager implements Serializable{
 						/* Interestingly I considered writing an equals method for tags
 						 * However the default equals method compares memory addresses
 						 * Since tags can only exist as one instance of type:value
-						 * this this implementation of equals is actually what we want.
+						 * this implementation of equals is actually what we want.
 						 */
 						return_list.add(tag_one);
 					}
