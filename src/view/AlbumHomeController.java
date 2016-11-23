@@ -8,16 +8,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Album;
 import model.Photo;
-import model.SessionManager;
+import model.SimpleDate;
 
 public class AlbumHomeController {
 	private ObservableList<Photo> obsList = FXCollections.observableArrayList();
@@ -33,6 +32,11 @@ public class AlbumHomeController {
 	
 	public void setPrevStage(Stage stage){
 		//TODO MUST FINISH THIS TO SETUP
+		if(thisAlbum.openAlbum() != null){
+			photoColumn.setCellValueFactory(new PropertyValueFactory<>("path"));
+			captionColumn.setCellValueFactory(new PropertyValueFactory<>("caption"));
+			loadPhotos();
+		}
 		prevStage = stage;
 	}
 	
@@ -42,8 +46,8 @@ public class AlbumHomeController {
 			obsList.add(photo);
 		}
 		if(!obsList.isEmpty()){
-			photoList.setItems(obsList);	
-			photoList.getSelectionModel().selectFirst();
+			photoTable.setItems(obsList);	
+			photoTable.getSelectionModel().selectFirst();
 		}
 	}
 	
@@ -53,11 +57,18 @@ public class AlbumHomeController {
 	}
 	@FXML
 	private void addPhoto(){
-		
+		String path = "test/test/test";
+		String caption = "I wish this worked";
+		SimpleDate date = new SimpleDate(8574837547L);
+		//TODO andrew do this
+		Photo p = new Photo(path, caption, date);
+		PhotoAlbum.sMan.addPhoto(p, thisAlbum);
+		loadPhotos();
 	}
 	@FXML
 	private void deletePhoto(){
-		
+		thisAlbum.deletePhoto(photoTable.getSelectionModel().getSelectedItem());
+		loadPhotos();
 	}
 	@FXML
 	private void slideshow(){
@@ -80,7 +91,6 @@ public class AlbumHomeController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserHome.fxml"));
 		AnchorPane albumLayout = (AnchorPane) loader.load();
 		UserController uControl = (UserController) loader.getController();
-		uControl.getSM(PhotoAlbum.sMan);
 		uControl.setPrevStage(prevStage);
 		if(PhotoAlbum.sMan.isLoggedIn()){
 			Scene scene = new Scene(albumLayout);
@@ -89,7 +99,7 @@ public class AlbumHomeController {
 		}
 	}
 	@FXML
-	private void logout() throws IOException{
+	private void logout() throws IOException, ClassNotFoundException{
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginPage.fxml"));
 		AnchorPane rootLayout = (AnchorPane) loader.load();

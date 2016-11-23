@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Album implements Serializable{
 	private String title;
@@ -23,6 +23,9 @@ public class Album implements Serializable{
 	
 	public Album(String t){
 		title = t;
+		photos = new ArrayList<Photo>();
+		//TODO remove test line
+		photos.add(new Photo("test/test","ughhhhh",new SimpleDate(23423423L)));
 		numberOfPhotos = 0;
 	}
 	
