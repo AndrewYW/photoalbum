@@ -1,9 +1,12 @@
 package view;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import application.PhotoAlbum;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Album;
+import model.User;
 
 public class UserController {
 	private Stage prevStage;
@@ -50,6 +54,25 @@ public class UserController {
 			//albumList.getColumns().add(albumOldCol);
 			//albumList.getColumns().add(albumNewCol);
 			loadAlbums();
+			//if(!albumFilter.getText().isEmpty()){
+			//	loadAlbums();
+			//}else{
+			albumFilter.textProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					System.out.println(albumFilter.getText().toString());
+					List<Album> albums = PhotoAlbum.sMan.searchAlbums(albumFilter.getText().toString());
+					obsList.clear();
+					for(Album album : albums){
+						obsList.add(album);
+					}
+					if(!obsList.isEmpty()){
+						albumList.setItems(obsList);
+						albumList.getSelectionModel().selectFirst();
+					}
+				}
+			});
+			//}
 		}		
 	}
 	
@@ -84,7 +107,7 @@ public class UserController {
 		dialog.setHeaderText("");
 		dialog.setContentText("Please enter album title:");
 		Optional<String> result = dialog.showAndWait();
-		String test = result.toString();
+		String test = result.get();
 		//TODO prevent existing album  name overlap
 		for(Album b : PhotoAlbum.sMan.myAlbums()){
 			if(b.getTitle().compareTo(test) == 0){
@@ -113,6 +136,18 @@ public class UserController {
 		dialog.setHeaderText("");
 		dialog.setContentText("Please enter new album title:");
 		Optional<String> result = dialog.showAndWait();
+		String test = result.get();
+		for(Album b : PhotoAlbum.sMan.myAlbums()){
+			if(b.getTitle().compareTo(test) == 0){
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("WARNING");
+				alert.setHeaderText("Album already exists");
+				alert.setContentText("Please enter a different title");
+				alert.showAndWait();
+				return;
+			}else{
+			}
+		}
 		result.ifPresent(name -> albumList.getSelectionModel().getSelectedItem().rename(name));
 		obsList.clear();
 		loadAlbums();

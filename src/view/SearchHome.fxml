@@ -23,8 +23,8 @@
       <ListView fx:id="tagTypes" layoutX="218.0" layoutY="205.0" prefHeight="200.0" prefWidth="200.0" />
       <ListView fx:id="tagValues" layoutX="453.0" layoutY="203.0" prefHeight="200.0" prefWidth="200.0" />
       <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toAlbums" prefHeight="26.0" prefWidth="200.0" text="to Albums" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="698.0" />
-      <RadioButton layoutX="695.0" layoutY="241.0" mnemonicParsing="false" text="Tag" />
-      <RadioButton layoutX="695.0" layoutY="273.0" mnemonicParsing="false" text="Date" />
+      <RadioButton fx:id="rb1" layoutX="695.0" layoutY="241.0" mnemonicParsing="false" text="Tag" />
+      <RadioButton fx:id="rb2" layoutX="695.0" layoutY="273.0" mnemonicParsing="false" text="Date" />
       <Label layoutX="349.0" layoutY="69.0" text="Search">
          <font>
             <Font size="48.0" />

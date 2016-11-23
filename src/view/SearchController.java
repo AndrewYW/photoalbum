@@ -2,10 +2,12 @@ package view;
 
 import java.io.IOException;
 
+import application.PhotoAlbum;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -27,7 +29,10 @@ public class SearchController {
 	private ListView<Tag> tagTypes;
 	@FXML
 	private ListView<Tag> tagValues;
-	
+	@FXML
+	private RadioButton rb1;
+	@FXML
+	private RadioButton rb2;
 	
 	private SessionManager sMan;
 	private Stage prevStage;
@@ -50,17 +55,17 @@ public class SearchController {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserHome.fxml"));
 		AnchorPane albumLayout = (AnchorPane) loader.load();
 		UserController uControl = (UserController) loader.getController();
-		uControl.getSM(sMan);
+		//uControl.getSM(sMan);
 		uControl.setPrevStage(prevStage);
-		if(sMan.isLoggedIn()){
+		if(PhotoAlbum.sMan.isLoggedIn()){
 			Scene scene = new Scene(albumLayout);
 			prevStage.setScene(scene);
 			prevStage.show();
 		}
 	}
 	@FXML
-	private void logout() throws IOException{
-		
+	private void logout() throws IOException, ClassNotFoundException{
+		PhotoAlbum.sMan.logout();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LoginPage.fxml"));
 		AnchorPane rootLayout = (AnchorPane) loader.load();
 		LoginController lControl = (LoginController) loader.getController();
@@ -69,7 +74,6 @@ public class SearchController {
 		prevStage.setTitle("Photo Album - Rumzi Tadros & Andrew Wang");
 		prevStage.setScene(scene);
 		prevStage.show();
-		sMan.logout();
 	}
 
 	public void getSM(SessionManager sm){
